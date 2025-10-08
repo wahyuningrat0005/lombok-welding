@@ -27,7 +27,9 @@ export default function TestimonialSection() {
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, idx) => (
             <div key={idx} className="bg-white p-8 rounded-xl shadow-lg relative">
-              <div className="text-6xl text-orange-500/30 absolute top-4 left-6">"</div>
+              <div className="text-6xl text-orange-500/30 absolute top-4 left-6">
+                &quot;
+              </div>
               <p className="italic text-gray-700 leading-relaxed mt-12 mb-6">
                 {testimonial.text}
               </p>
