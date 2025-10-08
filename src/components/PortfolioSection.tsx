@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface PortfolioItem {
@@ -104,7 +105,7 @@ export default function PortfolioSection() {
           Portofolio Karya Kami
         </h2>
         <p className="text-center text-lg text-gray-300 mb-16">
-          Hover untuk melihat transformasi Before & After
+          Hover untuk melihat transformasi Before &amp; After
         </p>
 
         {/* Main Slider Container */}
@@ -128,18 +129,24 @@ export default function PortfolioSection() {
                 onMouseEnter={() => setShowBefore(true)}
                 onMouseLeave={() => setShowBefore(false)}
               >
-                {/* Before Image (Di belakang) */}
-                <img
+                {/* Before Image (Di belakang) - FIXED dengan Next.js Image */}
+                <Image
                   src={item.before}
                   alt={`${item.label} - Before`}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 1200px"
+                  priority={index === 0}
+                  className="object-cover"
                 />
 
-                {/* After Image (Di depan, hilang saat hover) */}
-                <img
+                {/* After Image (Di depan, hilang saat hover) - FIXED dengan Next.js Image */}
+                <Image
                   src={item.after}
                   alt={`${item.label} - After`}
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                  fill
+                  sizes="(max-width: 768px) 100vw, 1200px"
+                  priority={index === 0}
+                  className={`object-cover transition-opacity duration-500 ${
                     showBefore && index === currentIndex ? 'opacity-0' : 'opacity-100'
                   }`}
                 />
@@ -158,9 +165,9 @@ export default function PortfolioSection() {
                 </div>
 
                 {/* Before/After Badge */}
-                <div className="absolute top-6 right-6 pointer-events-none">
+                <div className="absolute top-6 right-6 pointer-events-none z-10">
                   {showBefore && index === currentIndex ? (
-                    <div className="bg-red-500/90 text-white px-4 py-2 rounded-full font-bold text-sm animate-fade-in-up">
+                    <div className="bg-red-500/90 text-white px-4 py-2 rounded-full font-bold text-sm">
                       BEFORE
                     </div>
                   ) : (
@@ -176,7 +183,7 @@ export default function PortfolioSection() {
           {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all group"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all group z-20"
             aria-label="Previous slide"
           >
             <ChevronLeft className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
@@ -184,24 +191,14 @@ export default function PortfolioSection() {
 
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all group"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all group z-20"
             aria-label="Next slide"
           >
             <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
           </button>
 
-          {/* Progress Bar */}
-          {/* <div className="absolute top-4 left-4 right-4 h-1 bg-white/20 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-orange-500 transition-all duration-300"
-              style={{
-                width: `${((currentIndex + 1) / portfolio.length) * 100}%`
-              }}
-            />
-          </div> */}
-
           {/* Slide Counter */}
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-4 py-2 rounded-full text-sm font-semibold">
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-4 py-2 rounded-full text-sm font-semibold z-10">
             {currentIndex + 1} / {portfolio.length}
           </div>
         </div>
@@ -219,10 +216,12 @@ export default function PortfolioSection() {
               }`}
               aria-label={`Go to slide ${index + 1}`}
             >
-              <img
+              <Image
                 src={item.after}
                 alt={item.label}
-                className="w-full h-full object-cover"
+                fill
+                sizes="80px"
+                className="object-cover"
               />
             </button>
           ))}
